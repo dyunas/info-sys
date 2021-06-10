@@ -9,6 +9,71 @@
 		<form v-on:submit.prevent="submitForm" class="form-horizontal" id="newCourseForm">
 		<div class="card-body">
 			<fieldset>
+				<legend class="h6 text-uppercase font-weight-bold">Account Information:</legend>
+
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label for="gender">
+								USERNAME
+							</label>
+							<input
+								type="text"
+								class="form-control"
+								:class="{ 'is-invalid': $v.form.username.$error }"
+								placeholder="USERNAME"
+								v-model.trim="$v.form.username.$model"
+							/>
+							<span class="invalid-feedback" v-if="!$v.form.username.required" role="alert">
+								<strong>This field is required</strong>
+							</span>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label for="bdate">
+								PASSWORD
+							</label>
+							<input
+								type="password"
+								class="form-control"
+								:class="{ 'is-invalid': $v.form.password.$error }"
+								placeholder="PASSWORD"
+								v-model.trim="$v.form.password.$model"
+							/>
+							<span class="invalid-feedback" v-if="!$v.form.password.required" role="alert">
+								<strong>This field is required</strong>
+							</span>
+							<span class="invalid-feedback" v-if="!$v.form.password.required" role="alert">
+								<strong>This field is required</strong>
+							</span>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label for="age">
+								CONFIRM PASSWORD
+							</label>
+							<input
+								type="password"
+								class="form-control"
+								:class="{ 'is-invalid': $v.form.confirmPassword.$error }"
+								placeholder="CONFIRM PASSWORD"
+								v-model.trim="$v.form.confirmPassword.$model"
+							/>
+							<span
+								class="invalid-feedback"
+								v-if="!$v.form.confirmPassword.sameAsPassword"
+								role="alert"
+							>
+								<strong>Password and Confirm password does not match</strong>
+							</span>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset>
 				<legend class="h6 text-uppercase font-weight-bold">Student Information:</legend>
 
 				<div class="row">
@@ -377,7 +442,7 @@
 </template>
 
 <script>
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, sameAs } from "vuelidate/lib/validators";
 import Swal from "sweetalert2";
 import PhpJson from '../../../../public/json/ph_demographics.json'
 
@@ -395,6 +460,9 @@ export default {
 			instructors: [],
 			semesters: ['First Semester', 'Second Semester'],
 			form: {
+				username: "",
+				password: "",
+				confirmPassword: "",
 				firstName: "",
 				middleName: "",
 				lastName: "",
@@ -420,6 +488,16 @@ export default {
 
 	validations: {
 		form: {
+			username: {
+				required
+			},
+			password: {
+				required
+			},
+			confirmPassword: {
+				required,
+				sameAsPassword: sameAs('password')
+			},
 			firstName: {
 				required
 			},
@@ -602,6 +680,9 @@ export default {
 
 		resetForm() {
 			this.form = {
+				username: "",
+				password: "",
+				confirmPassword: "",
 				firstName: "",
 				middleName: "",
 				lastName: "",
@@ -632,6 +713,8 @@ export default {
 			this.$v.$touch()
 
 			if (!this.$v.$invalid) {
+				const username = this.form.username
+				const password = this.form.password
 				const firstName = this.form.firstName 
 				const middleName = this.form.middleName 
 				const lastName = this.form.lastName 
@@ -657,6 +740,8 @@ export default {
 					showLoaderOnConfirm: true,
 					preConfirm: function(result) {
 						return axios.post("http://localhost:8000/api/students", {
+							username: username,
+							password: password,
 							firstName: firstName,
 							middleName: middleName,
 							lastName: lastName,
@@ -686,7 +771,7 @@ export default {
 							});
 						});
 					},
-					allowOutsideClick: true//() => !Swal.isLoading()
+					allowOutsideClick: () => !Swal.isLoading()
 				}).then((result) => {
 					if (result.isConfirmed) {
 						Swal.fire({

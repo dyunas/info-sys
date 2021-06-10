@@ -32,7 +32,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<new-student-form :auth="{{auth()->user()}}"></new-student-form>
+						<new-student-form></new-student-form>
 					</div>
 				</div>
 			</div>

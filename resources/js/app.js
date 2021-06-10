@@ -53,6 +53,7 @@ Vue.component('new-student-form', require('./components/students/NewStudentForm.
 Vue.component('student-grades', require('./components/students/StudentGrades.vue').default);
 Vue.component('edit-academics', require('./components/students/EditAcademics.vue').default);
 Vue.component('add-subjects', require('./components/students/AddSubjects.vue').default);
+Vue.component('view-student-information', require('./components/students/ViewStudentInformation.vue').default);
 
 // curriculum
 Vue.component('curriculum-data-table', require('./components/curriculum/CurriculumDataTable.vue').default);

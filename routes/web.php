@@ -52,6 +52,6 @@ Route::group(['prefix' => 'instructor', 'as' => 'instructor.', 'middleware' => [
 });
 
 Route::get('test', function () {
-	$user = \App\Models\User::find(3);
-	$user->assignRole(1);
+	$user = \App\Models\User::find(4);
+	$user->assignRole(3);
 });

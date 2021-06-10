@@ -78,6 +78,11 @@ class User extends Authenticatable
 		return $this->hasOne(Instructor::class);
 	}
 
+	public function student()
+	{
+		return $this->hasOne(Student::class);
+	}
+
 	public function system_logs()
 	{
 		return $this->hasMany(SystemLog::class);

@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\GradedSubject;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Student;
 use App\Models\Subject;
-use Carbon\Carbon;
+use App\Models\SystemLog;
 use Illuminate\Http\Request;
+use App\Models\GradedSubject;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
 
@@ -38,6 +41,8 @@ class StudentsTableApiService
 	{
 		$validator = Validator::make(
 			$request->only(
+				'username',
+				'password',
 				'firstName',
 				'middleName',
 				'lastName',
@@ -56,6 +61,8 @@ class StudentsTableApiService
 				'subjects',
 			),
 			[
+				'username'	 => 'required',
+				'password'	 => 'required',
 				'firstName'  => 'required',
 				'middleName' => '',
 				'lastName'   => 'required',
@@ -88,10 +95,20 @@ class StudentsTableApiService
 		try {
 			$age = Carbon::parse($request->bdate)->age;
 
+			$user = User::create([
+				'username' => $request->username,
+				'password' => Hash::make($request->password),
+				'email'    => $request->email,
+			]);
+
+			$user->assignRole(3);
+
 			$student = Student::create([
+				'user_id'					=> $user->id,
 				'first_name' 			=> $request->firstName,
 				'middle_name' 		=> $request->middleName,
 				'last_name' 			=> $request->lastName,
+				'gender' 					=> $request->gender,
 				'bdate' 					=> $request->bdate,
 				'age' 						=> $age,
 				'email' 					=> $request->email,
@@ -115,6 +132,11 @@ class StudentsTableApiService
 					'semester' 			=> $request->semester
 				]);
 			}
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' has registered student ' . $student->first_name . ' ' . $student->last_name . ' into the record.',
+			]);
 
 			DB::commit();
 
@@ -166,6 +188,11 @@ class StudentsTableApiService
 				'semester' => $request->data['semester'],
 				'course_id' => $request->data['course'],
 				'curriculum_id' => $request->data['curriculum']
+			]);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' has updated the academic records of student ' . $student->first_name . ' ' . $student->last_name,
 			]);
 
 			DB::commit();
@@ -221,6 +248,11 @@ class StudentsTableApiService
 				]);
 			}
 
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' has added subjects to student ' . $student->first_name . ' ' . $student->last_name,
+			]);
+
 			DB::commit();
 
 			return response()->json([
@@ -236,5 +268,15 @@ class StudentsTableApiService
 				'error' => $error->getMessage(),
 			], 500);
 		}
+	}
+
+	public function show($id)
+	{
+		$student = User::query()
+			->where('id', $id)
+			->with('student', 'student.courses', 'student.curriculums', 'student.graded_subjects', 'student.graded_subjects.subjects')
+			->get();
+
+		return response()->json($student, 200);
 	}
 }

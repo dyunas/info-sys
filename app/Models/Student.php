@@ -58,6 +58,11 @@ class Student extends Model
 		],
 	];
 
+	public function users()
+	{
+		return $this->belongsTo(User::class, 'user_id', 'id');
+	}
+
 	public function curriculums()
 	{
 		return $this->belongsTo(Curriculum::class, 'curriculum_id', 'id');

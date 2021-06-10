@@ -28,6 +28,7 @@
 		<!-- Main content -->
 		<div class="content">
 			<div class="container-fluid">
+				@role('Admin')
 				<div class="row">
 					<div class="col-lg-3 col-6">
             <!-- small card -->
@@ -85,6 +86,15 @@
             </div>
           </div>
 				</div>
+				@endrole
+
+				@role('Student')
+				<div class="row">
+					<div class="col-lg-12">
+						<view-student-information :auth="{{auth()->user()}}"></view-student-information>
+					</div>
+				</div>
+				@endrole
 			</div>
 			<!-- /.container-fluid -->
 		</div>
