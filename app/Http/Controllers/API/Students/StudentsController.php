@@ -63,9 +63,9 @@ class StudentsController extends Controller
 		//
 	}
 
-	public function updateAcademics(Student $student, StudentsTableApiService $studentService, Request $request)
+	public function updateAcademics($id, StudentsTableApiService $studentService, Request $request)
 	{
-		return $studentService->updateAcademics($student, $request);
+		return $studentService->updateAcademics($id, $request);
 	}
 
 	/**

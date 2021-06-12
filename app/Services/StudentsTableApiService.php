@@ -161,7 +161,7 @@ class StudentsTableApiService
 		}
 	}
 
-	public function updateAcademics($student, $request)
+	public function updateAcademics($id, $request)
 	{
 		$validator = Validator::make(
 			$request->only(
@@ -189,6 +189,7 @@ class StudentsTableApiService
 		DB::beginTransaction();
 
 		try {
+			$student = Student::find($id);
 			$student->update([
 				'year_level' => $request->data['yearLevel'],
 				'semester' => $request->data['semester'],
