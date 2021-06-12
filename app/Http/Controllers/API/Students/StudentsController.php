@@ -35,9 +35,9 @@ class StudentsController extends Controller
 		return $studentService->store($request);
 	}
 
-	public function addSubjects(Student $student, StudentsTableApiService $studentService, Request $request)
+	public function addSubjects($id, StudentsTableApiService $studentService, Request $request)
 	{
-		return $studentService->addSubjects($student, $request);
+		return $studentService->addSubjects($id, $request);
 	}
 
 	/**

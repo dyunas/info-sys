@@ -219,7 +219,7 @@ class StudentsTableApiService
 		}
 	}
 
-	public function addSubjects($student, $request)
+	public function addSubjects($id, $request)
 	{
 		$validator = Validator::make(
 			$request->only(
@@ -245,6 +245,8 @@ class StudentsTableApiService
 		DB::beginTransaction();
 
 		try {
+			$student = Student::find($id);
+
 			foreach ($request->subjects as $subject) {
 				GradedSubject::firstOrCreate([
 					'student_id'  	=> $student->id,
