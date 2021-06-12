@@ -28,6 +28,11 @@ Vue.use(Vuelidate);
 // vue-select
 Vue.component("v-select", vSelect);
 
+// dashboard
+Vue.component('student-count-card', require('./components/dashboard/StudentCountCard.vue').default);
+Vue.component('instructor-count-card', require('./components/dashboard/InstructorCountCard.vue').default);
+Vue.component('academic-year-card', require('./components/dashboard/AcademicYearCard.vue').default);
+
 // courses
 Vue.component('course-data-table', require('./components/course/CourseDataTable.vue').default);
 
@@ -63,6 +68,10 @@ Vue.component('curriculum-tabs', require('./components/curriculum/CurriculumTabs
 
 // academic_year
 Vue.component('academic-data-table', require('./components/academicYear/AcademicYearDataTable.vue').default);
+
+// system logs
+Vue.component('system-logs-data-table', require('./components/logs/SystemLogsDataTable.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

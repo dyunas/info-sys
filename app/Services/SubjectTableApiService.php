@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Curriculum;
+use stdClass;
 use App\Models\Subject;
+use App\Models\SystemLog;
+use App\Models\Curriculum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
-use stdClass;
 
 class SubjectTableApiService
 {
@@ -102,13 +103,18 @@ class SubjectTableApiService
 		DB::beginTransaction();
 
 		try {
-			Subject::create([
+			$subject = Subject::create([
 				'name'  		 => $request->subjectName,
 				'code' 			 => $request->subjectCode,
 				'units' 		 => $request->units,
 				'pre_req' 	 => $request->preRequisite,
 				'year_level' => $request->yearLevel,
 				'semester'  => $request->semester
+			]);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' added subject ' . $subject->name,
 			]);
 
 			DB::commit();

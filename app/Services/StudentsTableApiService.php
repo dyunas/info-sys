@@ -5,7 +5,6 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Student;
-use App\Models\Subject;
 use App\Models\SystemLog;
 use Illuminate\Http\Request;
 use App\Models\GradedSubject;
@@ -35,6 +34,13 @@ class StudentsTableApiService
 		$data = $query->paginate($length);
 
 		return new DataTableCollectionResource($data);
+	}
+
+	public function count()
+	{
+		$count = Student::count();
+
+		return response()->json($count, 200);
 	}
 
 	public function store(Request $request)

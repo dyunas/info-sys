@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('users')->group(function () {
 	Route::post('/instructors/{instructor}/tag_subjects', [App\Http\Controllers\API\Instructors\InstructorsController::class, 'tagSubjects']);
 	Route::get('/instructors/get_list_of_instructors_by', [App\Http\Controllers\API\Instructors\InstructorsController::class, 'getListOfInstructorsBy']);
+	Route::get('/instructors/count', [App\Http\Controllers\API\Instructors\InstructorsController::class, 'count']);
 	Route::apiResource('/instructors', App\Http\Controllers\API\Instructors\InstructorsController::class);
 	Route::apiResource('/registrars', App\Http\Controllers\API\Registrars\RegistrarsController::class);
 });
@@ -48,9 +49,14 @@ Route::post('/curriculums/{curriculum}/add_subjects', [App\Http\Controllers\API\
 Route::apiResource('/curriculums', App\Http\Controllers\API\Curriculums\CurriculumsController::class);
 
 // academic_year
+Route::get('/academic-year/current_academic_year', [\App\Http\Controllers\API\AcademicYear\AcademicYearController::class, 'current_academic_year']);
 Route::apiResource('/academic-year', \App\Http\Controllers\API\AcademicYear\AcademicYearController::class);
 
 // students
 Route::post('/students/{student}/add_subjects', [App\Http\Controllers\API\Students\StudentsController::class, 'addSubjects']);
 Route::patch('/students/{student}/update_academics', [App\Http\Controllers\API\Students\StudentsController::class, 'updateAcademics']);
+Route::get('/students/count', [\App\Http\Controllers\API\Students\StudentsController::class, 'count']);
 Route::apiResource('/students', \App\Http\Controllers\API\Students\StudentsController::class);
+
+// Logs
+Route::apiResource('/system-logs', \App\Http\Controllers\API\Logs\SystemLogsController::class);

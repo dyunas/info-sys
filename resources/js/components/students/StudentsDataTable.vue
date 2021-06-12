@@ -136,7 +136,7 @@ export default {
 		},
 
 		handleAction(data) {
-			window.location.href = `http://localhost:8000/students/${data.id}`;
+			window.location.href = `http://localhost:8000/users/students/${data.id}`;
 		},
 
 		hideModal() {
@@ -144,7 +144,7 @@ export default {
 		},
 
 		addNewStudent() {
-			window.location.href = "http://localhost:8000/students/create";
+			window.location.href = "http://localhost:8000/users/students/create";
 		}
 	}
 }

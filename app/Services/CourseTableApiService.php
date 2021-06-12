@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Course;
+use App\Models\SystemLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -62,10 +63,15 @@ class CourseTableApiService
 		DB::beginTransaction();
 
 		try {
-			Course::create([
+			$course = Course::create([
 				'course_name' => $request->courseName,
 				'code'				=> $request->courseCode,
 				'year_levels' => $request->yearLevels
+			]);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' created course ' . $course->code . ' - ' . $course->course_name,
 			]);
 
 			DB::commit();

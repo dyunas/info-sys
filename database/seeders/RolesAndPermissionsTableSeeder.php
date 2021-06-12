@@ -124,7 +124,7 @@ class RolesAndPermissionsTableSeeder extends Seeder
 		}
 
 		Role::create([
-			'name' => 'Admin',
+			'name' => 'Registrar',
 			'guard_name' => 'web'
 		])->givePermissionTo(Permission::all());
 

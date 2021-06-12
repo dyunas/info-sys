@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Registrar;
+use App\Models\SystemLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -72,7 +73,7 @@ class RegistrarTableApiService
 				"password" => Hash::make($request->password),
 			]);
 
-			Registrar::create([
+			$registrar = Registrar::create([
 				"user_id" => $user->id,
 				"first_name"  => $request->firstName,
 				"middle_name" => $request->middleName,
@@ -80,6 +81,11 @@ class RegistrarTableApiService
 			]);
 
 			$user->syncRoles('Registrar');
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' added registrar ' . $registrar->last_name . ', ' . $registrar->first_name . ' into record.',
+			]);
 
 			DB::commit();
 

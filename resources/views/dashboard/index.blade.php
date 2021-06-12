@@ -28,62 +28,21 @@
 		<!-- Main content -->
 		<div class="content">
 			<div class="container-fluid">
-				@role('Admin')
+				@role('Registrar')
 				<div class="row">
-					<div class="col-lg-3 col-6">
+					<div class="col-lg-4 col-6">
             <!-- small card -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
-
-                <p>Active Students</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-user-graduate"></i>
-              </div>
-            </div>
+            <student-count-card></student-count-card>
           </div>
 
-					<div class="col-lg-3 col-6">
+					<div class="col-lg-4 col-6">
             <!-- small card -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
-
-                <p>Active Instructor</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-chalkboard-teacher"></i>
-              </div>
-            </div>
+            <instructor-count-card></instructor-count-card>
           </div>
 
-					<div class="col-lg-3 col-6">
+					<div class="col-lg-4 col-6">
             <!-- small card -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>2020-2021</h3>
-
-                <p>Academic Year</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-calendar-alt"></i>
-              </div>
-            </div>
-          </div>
-
-					<div class="col-lg-3 col-6">
-            <!-- small card -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>2nd</h3>
-
-                <p>Semester</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-calendar-day"></i>
-              </div>
-            </div>
+            <academic-year-card></academic-year-card>
           </div>
 				</div>
 				@endrole

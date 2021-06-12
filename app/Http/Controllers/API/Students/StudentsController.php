@@ -19,6 +19,11 @@ class StudentsController extends Controller
 		return $studentService->studentsDataTable($request);
 	}
 
+	public function count(StudentsTableApiService $studentService)
+	{
+		return $studentService->count();
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 *

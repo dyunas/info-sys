@@ -19,6 +19,11 @@ class InstructorsController extends Controller
 		return $instructorService->instructorDataTable($request);
 	}
 
+	public function count(InstructorTableApiService $instructorService)
+	{
+		return $instructorService->count();
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -30,9 +35,9 @@ class InstructorsController extends Controller
 		return $instructorService->addNewInstructor($request);
 	}
 
-	public function tagSubjects(InstructorTableApiService $instructorService, Instructor $instructor, Request $request)
+	public function tagSubjects(InstructorTableApiService $instructorService, $id, Request $request)
 	{
-		return $instructorService->tagSubjects($instructor, $request);
+		return $instructorService->tagSubjects($id, $request);
 	}
 
 	public function getListOfInstructorsBy(InstructorTableApiService $instructorService, Request $request)

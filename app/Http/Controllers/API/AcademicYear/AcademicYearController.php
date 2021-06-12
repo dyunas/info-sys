@@ -22,6 +22,11 @@ class AcademicYearController extends Controller
 		return $acadYearService->getListOfAcademicYear();
 	}
 
+	public function current_academic_year(AcademicYearTableApiService $acadYearService)
+	{
+		return $acadYearService->currentAcademicYear();
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 *

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\SystemLog;
 use App\Models\Curriculum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,9 +56,14 @@ class CurriculumTableApiService
 		DB::beginTransaction();
 
 		try {
-			Curriculum::create([
+			$curriculum = Curriculum::create([
 				"course_id" => $request->course,
 				"school_year" => $request->academicYear
+			]);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' created new curriculum ' . $curriculum->course->course_name . ' - ' . $curriculum->school_year,
 			]);
 
 			DB::commit();
@@ -106,6 +112,11 @@ class CurriculumTableApiService
 			foreach ($request->subjects as $subject) {
 				$curriculum->subjects()->attach($subject['subject']['id'], ['year_level' => $subject['year_level'], 'semester' => $subject['semester']]);
 			}
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' added subjects into curriculum ' . $curriculum->course->course_name . ' - ' . $curriculum->school_year,
+			]);
 
 			DB::commit();
 

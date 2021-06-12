@@ -37,14 +37,7 @@
 				</li>
 				@endrole
 
-				@role('Admin')
-				<li class="nav-item">
-					<a href="{{route('students.index')}}" class="nav-link {{ Request::segment(1) == 'students' ? 'active' : '' }}">
-						<i class="nav-icon fas fa-user-graduate"></i>
-						<p>Students</p>
-					</a>
-				</li>
-
+				@role('Registrar')
 				<li class="nav-item has-treeview {{ Request::segment(1) == 'users' ? 'menu-open' : '' }}">
 					<a href="#" class="nav-link {{ Request::segment(1) == 'users' ? 'active' : '' }}">
 						<i class="nav-icon fas fa-users"></i>
@@ -54,6 +47,13 @@
 						</p>
 					</a>
 					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="{{route('students.index')}}" class="nav-link {{ Request::segment(2) == 'students' ? 'active' : '' }}">
+								<i class="nav-icon fas fa-user-graduate"></i>
+								<p>Students</p>
+							</a>
+						</li>
+
 						<li class="nav-item">
 							<a href="{{route('instructor.index')}}" class="nav-link {{ Request::segment(2) == 'instructors' ? 'active' : '' }}">
 								<i class="fas fa-chalkboard-teacher	nav-icon"></i>
@@ -68,33 +68,62 @@
 						</li>
 					</ul>
 				</li>
-				
-				<li class="nav-item">
-					<a href="{{route('academic.index')}}" class="nav-link {{ Request::segment(1) == 'academic-year' ? 'active' : '' }}">
-						<i class="fas fa-calendar-alt nav-icon"></i>
-						<p>Academic Year</p>
+
+				<li class="nav-item has-treeview {{ Request::segment(1) == 'settings' ? 'menu-open' : '' }}">
+					<a href="#" class="nav-link {{ Request::segment(1) == 'settings' ? 'active' : '' }}">
+						<i class="nav-icon fas fa-cogs"></i>
+						<p>
+							Settings
+							<i class="fas fa-angle-left right"></i>
+						</p>
 					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="{{route('academic.index')}}" class="nav-link {{ Request::segment(2) == 'academic-year' ? 'active' : '' }}">
+								<i class="fas fa-calendar-alt nav-icon"></i>
+								<p>Academic Year</p>
+							</a>
+						</li>
+		
+						<li class="nav-item">
+							<a href="{{route('curriculums.index')}}" class="nav-link {{ Request::segment(2) == 'curriculums' ? 'active' : '' }}">
+								<i class="fas fa-book-open nav-icon"></i>
+								<p>Curriculum</p>
+							</a>
+						</li>
+		
+						<li class="nav-item">
+							<a href="{{route('courses.index')}}" class="nav-link {{ Request::segment(2) == 'courses' ? 'active' : '' }}">
+								<i class="fas fa-book-open nav-icon"></i>
+								<p>Courses</p>
+							</a>
+						</li>
+		
+						<li class="nav-item">
+							<a href="{{route('subjects.index')}}" class="nav-link {{ Request::segment(2) == 'subjects' ? 'active' : '' }}">
+								<i class="fas fa-book-open nav-icon"></i>
+								<p>Subjects</p>
+							</a>
+						</li>
+					</ul>
 				</li>
 
-				<li class="nav-item">
-					<a href="{{route('curriculums.index')}}" class="nav-link {{ Request::segment(1) == 'curriculums' ? 'active' : '' }}">
-						<i class="fas fa-book-open nav-icon"></i>
-						<p>Curriculum</p>
+				<li class="nav-item has-treeview {{ Request::segment(1) == 'logs' ? 'menu-open' : '' }}">
+					<a href="#" class="nav-link {{ Request::segment(1) == 'logs' ? 'active' : '' }}">
+						<i class="nav-icon fas fa-file-alt"></i>
+						<p>
+							Logs
+							<i class="fas fa-angle-left right"></i>
+						</p>
 					</a>
-				</li>
-
-				<li class="nav-item">
-					<a href="{{route('courses.index')}}" class="nav-link {{ Request::segment(1) == 'courses' ? 'active' : '' }}">
-						<i class="fas fa-book-open nav-icon"></i>
-						<p>Courses</p>
-					</a>
-				</li>
-
-				<li class="nav-item">
-					<a href="{{route('subjects.index')}}" class="nav-link {{ Request::segment(1) == 'subjects' ? 'active' : '' }}">
-						<i class="fas fa-book-open nav-icon"></i>
-						<p>Subjects</p>
-					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="{{route('logs.system.index')}}" class="nav-link {{ Request::segment(2) == 'system-logs' ? 'active' : '' }}">
+								<i class="fas fa-file-alt nav-icon"></i>
+								<p>System Logs</p>
+							</a>
+						</li>
+					</ul>
 				</li>
 				@endrole
 

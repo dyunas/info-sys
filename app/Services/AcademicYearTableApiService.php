@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\SystemLog;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,13 @@ class AcademicYearTableApiService
 		$data = $query->paginate($length);
 
 		return new DataTableCollectionResource($data);
+	}
+
+	public function currentAcademicYear()
+	{
+		$academicYear = AcademicYear::latest('created_at')->first();
+
+		return response()->json($academicYear, 200);
 	}
 
 	public function getListOfAcademicYear()
@@ -52,9 +60,14 @@ class AcademicYearTableApiService
 		DB::beginTransaction();
 
 		try {
-			AcademicYear::create([
+			$acad = AcademicYear::create([
 				'from' => $request->from,
 				'to' => $request->to
+			]);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' created academic year ' . $acad->from . ' - ' . $acad->to,
 			]);
 
 			DB::commit();

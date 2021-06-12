@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Models\Subject;
+use App\Models\SystemLog;
 use App\Models\Instructor;
 use Illuminate\Http\Request;
 use App\Models\GradedSubject;
+use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
@@ -49,7 +51,7 @@ class InstructorSubjectTableApiService
 	public function updateGrades(Request $request)
 	{
 		try {
-			GradedSubject::where('id', $request->data['id'])
+			$graded = GradedSubject::where('id', $request->data['id'])
 				->update(
 					[
 						'prelim' => $request->data['prelim'],
@@ -59,6 +61,13 @@ class InstructorSubjectTableApiService
 						'is_locked' => isset($request->data['locked']) ? $request->data['locked'] : 0,
 					]
 				);
+
+			$student = Student::find($graded->student_id);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->instructor->first_name . ' ' . auth()->user()->instructor->last_name . ' updated grade of student ' . $student->last_name . ', ' . $student->first_name,
+			]);
 
 			return response()->json([
 				'title' => 'Success',

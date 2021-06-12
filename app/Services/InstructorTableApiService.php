@@ -2,16 +2,17 @@
 
 namespace App\Services;
 
+use stdClass;
 use App\Models\User;
-use App\Models\Instructor;
 use App\Models\Subject;
+use App\Models\SystemLog;
+use App\Models\Instructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Spatie\Permission\Models\Role;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
-use stdClass;
 
 class InstructorTableApiService
 {
@@ -35,6 +36,13 @@ class InstructorTableApiService
 		$data = $query->paginate($length);
 
 		return new DataTableCollectionResource($data);
+	}
+
+	public function count()
+	{
+		$count = Instructor::count();
+
+		return response()->json($count, 200);
 	}
 
 	public function addNewInstructor($request)
@@ -92,6 +100,11 @@ class InstructorTableApiService
 			$instructor->subjects()->sync($subjects);
 			$user->syncRoles('Instructor');
 
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' added instructor ' . $instructor->last_name . ', ' . $instructor->first_name . ' into record.',
+			]);
+
 			DB::commit();
 
 			return response()->json([
@@ -109,7 +122,7 @@ class InstructorTableApiService
 		}
 	}
 
-	public function tagSubjects($instructor, $request)
+	public function tagSubjects($id, $request)
 	{
 		$validator = Validator::make(
 			$request->only(
@@ -136,7 +149,14 @@ class InstructorTableApiService
 				$subjects[] = $subject['subject_id'];
 			}
 
+			$instructor = Instructor::find($id);
+
 			$instructor->subjects()->sync($subjects);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' tag subjects to instructor ' . $instructor->last_name . ', ' . $instructor->first_name,
+			]);
 
 			DB::commit();
 
