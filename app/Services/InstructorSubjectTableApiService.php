@@ -50,9 +50,11 @@ class InstructorSubjectTableApiService
 
 	public function updateGrades(Request $request)
 	{
+		DB::beginTransaction();
+
 		try {
-			$graded = GradedSubject::where('id', $request->data['id'])
-				->update(
+			$graded = GradedSubject::find($request->data['id']);
+			$graded->update(
 					[
 						'prelim' => $request->data['prelim'],
 						'midterm' => $request->data['midterm'],
@@ -69,11 +71,15 @@ class InstructorSubjectTableApiService
 				'log'			=> auth()->user()->instructor->first_name . ' ' . auth()->user()->instructor->last_name . ' updated grade of student ' . $student->last_name . ', ' . $student->first_name,
 			]);
 
+			DB::commit();
+
 			return response()->json([
 				'title' => 'Success',
 				'message' => 'Saved!',
 			], 200);
 		} catch (\Throwable $error) {
+			DB::rollback();
+
 			return response()->json([
 				'title' => 'Error',
 				'message' => 'An error occured while saving. Please try again later.',

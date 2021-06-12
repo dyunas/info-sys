@@ -113,7 +113,7 @@ export default {
 		handleAction(data) {
 			const id = data.id;
 
-			window.location.href = `http://localhost:8000/curriculums/${id}`
+			window.location.href = `http://localhost:8000/settings/curriculums/${id}`
 		},
 
 		hideModal() {
@@ -121,7 +121,7 @@ export default {
 		},
 
 		addNewCurriculum() {
-			window.location.href = 'http://localhost:8000/curriculums/create';
+			window.location.href = 'http://localhost:8000/settings/curriculums/create';
 		}
 	}
 }

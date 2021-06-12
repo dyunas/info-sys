@@ -39,7 +39,7 @@ class Student extends Model
 				"model" => \App\Models\Course::class,
 				"foreign_key" => "course_id",
 				"columns" => [
-					"school_year" => [
+					"course_name" => [
 						"searchable" => true,
 						"orderable" => true,
 					]
