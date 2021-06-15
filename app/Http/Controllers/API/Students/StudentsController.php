@@ -58,9 +58,9 @@ class StudentsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update($id, Request $request, StudentsTableApiService $studentService)
 	{
-		//
+		return $studentService->update($id, $request);
 	}
 
 	public function updateAcademics($id, StudentsTableApiService $studentService, Request $request)

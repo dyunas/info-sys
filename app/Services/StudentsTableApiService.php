@@ -64,6 +64,7 @@ class StudentsTableApiService
 				'semester',
 				'course',
 				'curriculum',
+				'acadYear',
 				'subjects',
 			),
 			[
@@ -84,6 +85,7 @@ class StudentsTableApiService
 				'semester'   => 'required',
 				'course' 		 => 'required',
 				'curriculum' => 'required',
+				'acadYear' => 'required',
 				'subjects' 	 => 'required',
 			]
 		);
@@ -127,6 +129,7 @@ class StudentsTableApiService
 				'semester' 				=> $request->semester,
 				'course_id' 			=> $request->course,
 				'curriculum_id' 	=> $request->curriculum,
+				'acad_year' 	    => $request->acadYear,
 			]);
 
 			foreach ($request->subjects as $subject) {
@@ -135,7 +138,8 @@ class StudentsTableApiService
 					'subject_id' 	 	=> $subject['subject_id'],
 					'instructor_id' => $subject['instructor_id']['id'],
 					'year_level' 		=> $request->yearLevel,
-					'semester' 			=> $request->semester
+					'acad_year'			=> $request->acadYear,
+					'semester' 			=> $request->semester,
 				]);
 			}
 
@@ -166,12 +170,14 @@ class StudentsTableApiService
 		$validator = Validator::make(
 			$request->only(
 				'data.yearLevel',
+				'data.acadYear',
 				'data.semester',
 				'data.course',
 				'data.curriculum'
 			),
 			[
 				'data.yearLevel' => 'required',
+				'data.acadYear' => 'required',
 				'data.semester' => 'required',
 				'data.course' => 'required',
 				'data.curriculum' => 'required'
@@ -194,7 +200,8 @@ class StudentsTableApiService
 				'year_level' => $request->data['yearLevel'],
 				'semester' => $request->data['semester'],
 				'course_id' => $request->data['course'],
-				'curriculum_id' => $request->data['curriculum']
+				'curriculum_id' => $request->data['curriculum'],
+				'acad_year' => $request->data['acadYear']
 			]);
 
 			SystemLog::create([
@@ -225,11 +232,13 @@ class StudentsTableApiService
 			$request->only(
 				'yearlevel',
 				'semester',
+				'acadYear',
 				'subjects',
 			),
 			[
 				'yearlevel' => 'required',
 				'semester' => 'required',
+				'acadYear' => 'required',
 				'subjects' => 'required',
 			]
 		);
@@ -253,6 +262,7 @@ class StudentsTableApiService
 					'subject_id' 	 	=> $subject['subject_id'],
 					'instructor_id' => $subject['instructor_id']['id'],
 					'year_level' 		=> $request->yearlevel,
+					'acad_year' 		=> $request->acadYear,
 					'semester' 			=> $request->semester
 				]);
 			}
@@ -287,5 +297,50 @@ class StudentsTableApiService
 			->get();
 
 		return response()->json($student, 200);
+	}
+
+	public function update($id, $request)
+	{
+		DB::beginTransaction();
+
+		try {
+			$age = Carbon::parse($request->data['bdate'])->age;
+
+			$student = Student::find($id);
+			$student->update([
+				'first_name' 			=> $request->data['firstName'],
+				'middle_name' 		=> $request->data['middleName'],
+				'last_name' 			=> $request->data['lastName'],
+				'gender' 					=> $request->data['gender'],
+				'bdate' 					=> $request->data['bdate'],
+				'age' 						=> $age,
+				'email' 					=> $request->data['email'],
+				'contact_number'  => $request->data['contactNumber'],
+				'address' 				=> $request->data['address'],
+				'province' 				=> $request->data['province'],
+				'municipal' 			=> $request->data['municipal'],
+				'barangay' 				=> $request->data['barangay'],
+			]);
+
+			SystemLog::create([
+				'user_id' => auth()->user()->id,
+				'log'			=> auth()->user()->registrar->first_name . ' ' . auth()->user()->registrar->last_name . ' has updated information of student ' . $student->first_name . ' ' . $student->last_name,
+			]);
+
+			DB::commit();
+
+			return response()->json([
+				'title' => 'Success',
+				'message' => 'Information updated!',
+			], 200);
+		} catch (\Throwable $error) {
+			DB::rollback();
+
+			return response()->json([
+				'title' => 'Error',
+				'message' => 'An error occured while academics updated. Please try again later.',
+				'error' => $error->getMessage(),
+			], 500);
+		}
 	}
 }

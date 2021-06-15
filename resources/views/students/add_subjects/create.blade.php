@@ -33,7 +33,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<add-subjects :stud-id="{{$student->id}}" :year-level="{{$student->year_level}}" :course="{{$student->courses}}" :curriculum="{{$student->curriculums}}" :semester="{{'"'.$student->semester.'"'}}"></add-subjects>
+						<add-subjects :stud-id="{{$student->id}}" :year-level="{{$student->year_level}}" :course="{{$student->courses}}" :curriculum="{{$student->curriculums}}" :semester="{{'"'.$student->semester.'"'}}" :acad-year="{{ '"'.$student->acad_year.'"' }}"></add-subjects>
 					</div>
 				</div>
 			</div>

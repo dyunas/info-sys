@@ -55,6 +55,7 @@ Vue.component('new-registrar-form', require('./components/registrar/NewRegistrar
 // students
 Vue.component('students-data-table', require('./components/students/StudentsDataTable.vue').default);
 Vue.component('new-student-form', require('./components/students/NewStudentForm.vue').default);
+Vue.component('edit-student-form', require('./components/students/EditInformation.vue').default);
 Vue.component('student-grades', require('./components/students/StudentGrades.vue').default);
 Vue.component('edit-academics', require('./components/students/EditAcademics.vue').default);
 Vue.component('add-subjects', require('./components/students/AddSubjects.vue').default);

@@ -63,6 +63,25 @@ class CourseTableApiService
 		DB::beginTransaction();
 
 		try {
+			$findCourse = Course::query()
+				->where(
+					'course_name',
+					$request->courseName,
+
+				)
+				->where(
+					'code',
+					$request->courseCode,
+				)
+				->get();
+
+			if ($findCourse) {
+				return response()->json([
+					'title' => 'Alert',
+					'message' => 'Course already exists!',
+				], 500);
+			}
+
 			$course = Course::create([
 				'course_name' => $request->courseName,
 				'code'				=> $request->courseCode,

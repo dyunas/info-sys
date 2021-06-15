@@ -10,14 +10,14 @@
 			<table class="table table-sm table-bordered table-hover text-nowrap">
 				<thead>
 					<tr>
-						<th width="25%">Last Name</th>
-						<th width="25%">First Name</th>
-						<th width="25%">Middle Name</th>
-						<th width="5%" class="text-center">Prelim</th>
-						<th width="5%" class="text-center">Midterm</th>
-						<th width="5%" class="text-center">Final</th>
-						<th width="5%" class="text-center">GPA</th>
-						<th width="5%" class="text-center">ACTION</th>
+						<th width="18%">Last Name</th>
+						<th width="18%">First Name</th>
+						<th width="18%">Middle Name</th>
+						<th width="10%" class="text-center">Prelim</th>
+						<th width="10%" class="text-center">Midterm</th>
+						<th width="10%" class="text-center">Final</th>
+						<th width="10%" class="text-center">GRADE</th>
+						<th width="6%" class="text-center">ACTION</th>
 					</tr>
 				</thead>
 
@@ -86,7 +86,7 @@ export default {
 			const parsedPrelim = (prelim !== null) ? parseFloat(prelim) : 0; 
 			const parsedMidterm = (midterm !== null) ? parseFloat(midterm) : 0;
 			const parsedFinal = (final !== null) ? parseFloat(final) : 0;
-			const gpa = Math.round(((parsedPrelim + parsedMidterm + parsedFinal) / 3 ) * 100) / 100;
+			const gpa = (parsedPrelim * 0.30) + (parsedMidterm * 0.30) + (parsedFinal * 0.40);
 			
 			this.list[index].GPA = gpa;
 		},

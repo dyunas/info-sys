@@ -113,6 +113,10 @@ export default {
 		yearLevel: {
 			type: Number,
 			required: true
+		},
+		acadYear: {
+			type: String,
+			required: true
 		}
 	},
 
@@ -125,6 +129,7 @@ export default {
 				semester: this.semester,
 				course: this.course.id,
 				curriculum: this.curriculum.id,
+				acadYear: this.acadYear,
 				subjects: [{
 					subject_id: "",
 					instructor_id: "",
@@ -207,6 +212,7 @@ export default {
 				const subjects = this.form.subjects
 				const semester = this.semester
 				const yearlevel = this.yearLevel
+				const acadYear = this.acadYear
 
 				Swal.fire({
 					title: "Add subjects?",
@@ -218,7 +224,8 @@ export default {
 						return axios.post(`http://localhost:8000/api/students/${studId}/add_subjects`, {
 							subjects: subjects,
 							semester: semester,
-							yearlevel: yearlevel
+							yearlevel: yearlevel,
+							acadYear: acadYear
 						})
 						.then(response => {
 							return response.data;

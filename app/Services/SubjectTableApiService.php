@@ -103,14 +103,35 @@ class SubjectTableApiService
 		DB::beginTransaction();
 
 		try {
-			$subject = Subject::create([
-				'name'  		 => $request->subjectName,
-				'code' 			 => $request->subjectCode,
-				'units' 		 => $request->units,
-				'pre_req' 	 => $request->preRequisite,
-				'year_level' => $request->yearLevel,
-				'semester'  => $request->semester
-			]);
+			$findSubject = Subject::query()
+				->where(
+					'name',
+					$request->subjectName,
+
+				)
+				->where(
+					'code',
+					$request->subjectCode,
+				)
+				->get();
+
+			if ($findSubject) {
+				return response()->json([
+					'title' => 'Alert',
+					'message' => 'Subject already exists!',
+				], 500);
+			}
+
+			$subject = Subject::create(
+				[
+					'name'  		 => $request->subjectName,
+					'code' 			 => $request->subjectCode,
+					'units' 		 => $request->units,
+					'pre_req' 	 => ($request->preRequisite !== '') ? $request->preRequisite : 'N/A',
+					'year_level' => $request->yearLevel,
+					'semester'   => $request->semester
+				]
+			);
 
 			SystemLog::create([
 				'user_id' => auth()->user()->id,

@@ -29,14 +29,14 @@
 <script>
 import DataTable from "laravel-vue-datatable";
 import CustomTableDesign from "../mixins/CustomTableStyle.js";
-import DtViewBtn from '../inputs/DtViewBtn'
+import DtEditBtn from '../inputs/DtEditBtn'
 import NewSubjectModal from "../subject/NewSubjectModal";
 
 Vue.use(DataTable);
 
 export default {
 	components: {
-		DtViewBtn,
+		DtEditBtn,
 		NewSubjectModal
 	},
 
@@ -94,7 +94,7 @@ export default {
 				},
 				{
 					label: "ACTION",
-					name: "view",
+					name: "Edit",
 					orderable: false,
 					classes: {
 						btn: true,
@@ -103,7 +103,7 @@ export default {
 					},
 					event: "click",
 					handler: this.handleAction,
-					component: DtViewBtn
+					component: DtEditBtn
 				}
 			]
 		};

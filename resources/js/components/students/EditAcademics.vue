@@ -32,7 +32,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="yearLevel">YEAR LEVEL</label>
 							<v-select
@@ -48,7 +48,7 @@
 						</div>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="curriculum">CURRICULUM</label>
 							<v-select
@@ -66,7 +66,7 @@
 						</div>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="semester">SEMESTER</label>
 							<v-select
@@ -77,6 +77,22 @@
 								placeholder="SELECT SEMESTER"
 							></v-select>
 							<span class="invalid-feedback" v-if="!$v.form.semester.required" role="alert">
+								<strong>This field is required</strong>
+							</span>
+						</div>
+					</div>
+
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label for="acadYear">ACADEMIC YEAR</label>
+							<v-select
+								id="acadYear"
+								:options="academicYears"
+								v-model="$v.form.acadYear.$model"
+								:class="{ 'is-invalid' : $v.form.acadYear.$error }"
+								placeholder="SELECT ACADEMIC YEAR"
+							></v-select>
+							<span class="invalid-feedback" v-if="!$v.form.acadYear.required" role="alert">
 								<strong>This field is required</strong>
 							</span>
 						</div>
@@ -125,6 +141,10 @@ export default {
 		yearLevel: {
 			type: Number,
 			required: true
+		},
+		acadYear: {
+			type: String,
+			required: true
 		}
 	},
 
@@ -134,11 +154,13 @@ export default {
 			yearLevels: [],
 			curriculums: [],
 			semesters: ['First Semester', 'Second Semester'],
+			academicYears: [],
 			form: {
 				yearLevel: this.yearLevel,
 				semester: this.semester,
 				course: this.course.id,
 				curriculum: this.curriculum.id,
+				acadYear: this.acadYear,
 			}
 		}
 	},
@@ -157,6 +179,9 @@ export default {
 			curriculum: {
 				required
 			},
+			acadYear: {
+				required
+			},
 		}
 	},
 
@@ -169,6 +194,7 @@ export default {
 
 	mounted() {
 		this.getData();
+		this.getAcademicYears();
 	},
 
 	methods: {
@@ -178,6 +204,7 @@ export default {
 				semester: this.semester,
 				course: this.course.id,
 				curriculum: this.curriculum.id,
+				acadYear: this.acadYear
 			}
 
 			this.$nextTick(() => {
@@ -189,6 +216,18 @@ export default {
 			await this.getListOfCourses();
 			await this.getYearLevelsOfCourse('',this.course.id);
 			await this.getCurriculumsOfCourse('',this.course.id);
+		},
+
+		getAcademicYears() {
+			axios.get(`http://localhost:8000/api/academic-year`)
+			.then(response => {
+				const list = [];
+				response.data.forEach(el => {
+					list.push(`${el.from} - ${el.to}`);
+				})
+
+				this.academicYears = list
+			})
 		},
 
 		getListOfCourses() {
@@ -239,6 +278,7 @@ export default {
 				const semester = this.form.semester 
 				const course = this.form.course 
 				const curriculum = this.form.curriculum
+				const acadYear = this.form.acadYear
 
 				Swal.fire({
 					title: "Update academics?",
@@ -253,6 +293,7 @@ export default {
 								semester: semester,
 								course: course,
 								curriculum: curriculum,
+								acadYear: acadYear,
 							},
 							_method: "PATCH"
 						})

@@ -148,7 +148,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="yearLevel">YEAR LEVEL</label>
 							<div class="form-control form-outline">
@@ -157,7 +157,7 @@
 						</div>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="curriculum">CURRICULUM</label>
 							<div class="form-control form-outline">
@@ -166,11 +166,20 @@
 						</div>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="semester">SEMESTER</label>
 							<div class="form-control form-outline">
 								{{record[0].student.semester}}
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label for="semester">ACADEMIC YEAR</label>
+							<div class="form-control form-outline">
+								{{record[0].student.acad_year}}
 							</div>
 						</div>
 					</div>
@@ -186,7 +195,7 @@
 			</div>
 
 			<div class="card-body p-0">
-				<student-grades :year-levels="record[0].student.courses.year_levels" :subjects="record[0].student.graded_subjects"></student-grades>
+				<student-grades :year-levels="record[0].student.courses.year_levels" :subjects="record[0].student.graded_subjects" :acad-year="record[0].student.acad_year"></student-grades>
 			</div>
 		</div>
 	</div>

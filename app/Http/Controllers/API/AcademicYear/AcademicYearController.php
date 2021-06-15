@@ -15,7 +15,7 @@ class AcademicYearController extends Controller
 	 */
 	public function index(AcademicYearTableApiService $acadYearService, Request $request)
 	{
-		if (isset($request)) {
+		if (count($request->all()) > 0) {
 			return $acadYearService->academicYearDataTable($request);
 		}
 

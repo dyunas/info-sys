@@ -63,7 +63,13 @@ class StudentsController extends Controller
 	 */
 	public function edit($id)
 	{
-		return view('students.edit');
+		$student = Student::query()
+			->where('id', $id)
+			->with('courses:id,course_name,year_levels', 'curriculums:id,school_year', 'graded_subjects', 'graded_subjects.subjects')
+			->get();
+
+
+		return view('students.edit', compact('student'));
 	}
 
 	public function edit_academic(Student $student)

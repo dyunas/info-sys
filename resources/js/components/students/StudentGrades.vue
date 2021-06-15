@@ -15,7 +15,7 @@
 								<th width="5%">Prelim</th>
 								<th width="5%">Midterm</th>
 								<th width="5%">Final</th>
-								<th width="5%">GPA</th>
+								<th width="5%">GRADE</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -45,7 +45,7 @@
 								<th width="5%">Prelim</th>
 								<th width="5%">Midterm</th>
 								<th width="5%">Final</th>
-								<th width="5%">GPA</th>
+								<th width="5%">GRADE</th>
 							</tr>
 						</thead>
 						<tbody>

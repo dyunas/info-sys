@@ -193,7 +193,7 @@
 								</div>
 				
 								<div class="row">
-									<div class="col-lg-4">
+									<div class="col-lg-3">
 										<div class="form-group">
 											<label for="yearLevel">YEAR LEVEL</label>
 											<div class="form-control form-outline">
@@ -202,7 +202,7 @@
 										</div>
 									</div>
 				
-									<div class="col-lg-4">
+									<div class="col-lg-3">
 										<div class="form-group">
 											<label for="curriculum">CURRICULUM</label>
 											<div class="form-control form-outline">
@@ -211,11 +211,20 @@
 										</div>
 									</div>
 				
-									<div class="col-lg-4">
+									<div class="col-lg-3">
 										<div class="form-group">
 											<label for="semester">SEMESTER</label>
 											<div class="form-control form-outline">
 												{{$student[0]->semester}}
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-3">
+										<div class="form-group">
+											<label for="acadYear">ACADEMIC YEAR</label>
+											<div class="form-control form-outline">
+												{{$student[0]->acad_year}}
 											</div>
 										</div>
 									</div>

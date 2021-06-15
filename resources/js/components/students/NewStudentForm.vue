@@ -309,7 +309,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="yearLevel">YEAR LEVEL</label>
 							<v-select
@@ -325,7 +325,7 @@
 						</div>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="curriculum">CURRICULUM</label>
 							<v-select
@@ -343,7 +343,7 @@
 						</div>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-3">
 						<div class="form-group">
 							<label for="semester">SEMESTER</label>
 							<v-select
@@ -354,6 +354,22 @@
 								placeholder="SELECT SEMESTER"
 							></v-select>
 							<span class="invalid-feedback" v-if="!$v.form.semester.required" role="alert">
+								<strong>This field is required</strong>
+							</span>
+						</div>
+					</div>
+
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label for="acadYear">ACADEMIC YEAR</label>
+							<v-select
+								id="acadYear"
+								:options="academicYears"
+								v-model="$v.form.acadYear.$model"
+								:class="{ 'is-invalid' : $v.form.acadYear.$error }"
+								placeholder="SELECT ACADEMIC YEAR"
+							></v-select>
+							<span class="invalid-feedback" v-if="!$v.form.acadYear.required" role="alert">
 								<strong>This field is required</strong>
 							</span>
 						</div>
@@ -459,6 +475,7 @@ export default {
 			subjects: [],
 			instructors: [],
 			semesters: ['First Semester', 'Second Semester'],
+			academicYears: [],
 			form: {
 				username: "",
 				password: "",
@@ -478,6 +495,7 @@ export default {
 				semester: "",
 				course: "",
 				curriculum: "",
+				acadYear: "",
 				subjects: [{
 					subject_id: "",
 					instructor_id: "",
@@ -541,6 +559,9 @@ export default {
 			semester: {
 				required
 			},
+			acadYear: {
+				required
+			},
 			subjects: {
 				required,
 				$each: {
@@ -585,6 +606,7 @@ export default {
 	mounted() {
 		this.mapProvince();
 		this.getListOfCourses();
+		this.getAcademicYears();
 	},
 
 	methods: {
@@ -618,6 +640,18 @@ export default {
 			})
 
 			this.barangays = barangays.barangay
+		},
+
+		getAcademicYears() {
+			axios.get(`http://localhost:8000/api/academic-year`)
+			.then(response => {
+				const list = [];
+				response.data.forEach(el => {
+					list.push(`${el.from} - ${el.to}`);
+				})
+
+				this.academicYears = list
+			})
 		},
 
 		getListOfCourses() {
@@ -698,6 +732,7 @@ export default {
 				semester: "",
 				course: "",
 				curriculum: "",
+				acadYear: "",
 				subjects: [{
 					subject_id: "",
 					instructor_id: "",
@@ -730,6 +765,7 @@ export default {
 				const semester = this.form.semester 
 				const course = this.form.course 
 				const curriculum = this.form.curriculum 
+				const acadYear = this.form.acadYear 
 				const subjects = this.form.subjects 
 
 				Swal.fire({
@@ -757,6 +793,7 @@ export default {
 							semester: semester,
 							course: course,
 							curriculum: curriculum,
+							acadYear: acadYear,
 							subjects: subjects,
 						})
 						.then(response => {
